@@ -27,7 +27,7 @@ namespace PlaningTask
         {
 
             string[] Data = new string[8];
-            if(lever)
+            if(lever && Data[0] == string.Empty)
             {
                 Data[0] = numberOfAllPages.ToString();
                 lever = false;
@@ -168,6 +168,18 @@ namespace PlaningTask
                     }
                 tabControl.TabPages.Remove(tabControl.TabPages[index]);
                 comboBox1.Items.RemoveAt(index - 1);
+
+                string[] temp = File.ReadAllLines(FILENAME), newTemp = new string[temp.Length - 8];
+                int j = 0;
+                for(int i = 1; i < temp.Length; i++)
+                {
+                    if (i >= index * 7 - 6 && i <= index * 7)
+                        continue;
+                    newTemp[j] = temp[i];
+                    j++;
+                }
+                newTemp[0] = numberOfAllPages.ToString();
+                File.WriteAllLines(FILENAME, newTemp);
             }
         }
 
